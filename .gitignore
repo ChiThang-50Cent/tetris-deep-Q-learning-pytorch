@@ -3,5 +3,3 @@ tensorboard
 src/__pycache__
 
 src/test.py
-
-trained_model/*

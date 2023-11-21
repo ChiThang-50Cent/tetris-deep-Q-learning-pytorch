@@ -154,9 +154,9 @@ def train(opt):
         writer.add_scalar('Train/Cleared line', final_cleared_lines, epoch - 1)    
 
         if epoch > 0 and epoch % opt.save_interval == 0:
-            torch.save(model, f'{opt.saved_path}/tetris_{epoch}')
+            torch.save(model, f'{opt.save_path}/tetris_{epoch}')
 
-    torch.save(model, f'{opt.saved_path}/tetris')
+    torch.save(model, f'{opt.save_path}/tetris')
 
 if __name__ == '__main__':
     opt = get_args()

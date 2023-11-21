@@ -22,7 +22,7 @@ def get_args():
     parser.add_argument("--height", type=int, default=20)
     parser.add_argument("--block_size", type=int, default=30)
     parser.add_argument("--batch_size", type=int, default=512)
-    parser.add_argument("--lr", type=float, default=0.001)
+    parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--gamma", type=float, default=0.99)
     parser.add_argument("--initial_epsilon", type=float, default=1.0)
     parser.add_argument("--final_epsilon", type=float, default=1e-3)
@@ -30,6 +30,7 @@ def get_args():
     parser.add_argument("--num_epochs", type=int, default=3000)
     parser.add_argument("--save_interval", type=int, default=1000)
     parser.add_argument("--replay_memory_size", type=int, default=30000)
+    parser.add_argument("--render", type=int, default=0)
     parser.add_argument("--log_path", type=str, default="tensorboard")
     parser.add_argument("--save_path", type=str, default="trained_model")
 
@@ -87,7 +88,7 @@ def train(opt):
         next_states = next_states[index, :]
         action = next_action[index]
 
-        reward, done = env.step(action, render=True)
+        reward, done = env.step(action, render=bool(opt.render))
 
         if torch.cuda.is_available():
             next_states = next_states.cuda()
@@ -139,7 +140,7 @@ def train(opt):
         loss.backward()
         optimizer.step()
 
-        print("Epoch: {}/{}, Action: {}/{}, Score: {}, Tetrominoes {}, Cleared line: {}".format(
+        print("Epoch: {}/{}, Action: {}, Score: {}, Tetrominoes {}, Cleared line: {}".format(
             epoch,
             opt.num_epochs,
             action,

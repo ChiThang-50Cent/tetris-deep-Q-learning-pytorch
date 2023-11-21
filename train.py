@@ -60,6 +60,8 @@ def train(opt):
 
     replay_memory = deque(maxlen=opt.replay_memory_size)
     epoch = 0
+    max_cleared = 0
+
 
     while epoch < opt.num_epochs:
         next_steps = env.get_next_state()
@@ -152,8 +154,9 @@ def train(opt):
         writer.add_scalar('Train/Score', final_score, epoch - 1)
         writer.add_scalar('Train/Tetrominoes', final_tetrominoes, epoch - 1)
         writer.add_scalar('Train/Cleared line', final_cleared_lines, epoch - 1)    
-
-        if epoch > 0 and epoch % opt.save_interval == 0:
+        
+        if epoch > 0 and final_cleared_lines > max_cleared:
+            max_cleared = final_cleared_lines
             torch.save(model, f'{opt.save_path}/tetris_{epoch}')
 
     torch.save(model, f'{opt.save_path}/tetris')

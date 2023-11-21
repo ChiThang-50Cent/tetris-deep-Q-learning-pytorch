@@ -83,8 +83,8 @@ class Tetirs:
         for i, row in enumerate(board[::-1]):
             if 0 not in row:
                 to_delete.append(len(board) - 1 - i)
-            if len(to_delete) > 0:
-                board = self.remove_row(board, to_delete)
+        if len(to_delete) > 0:
+            board = self.remove_row(board, to_delete)
             
         return len(to_delete), board
     

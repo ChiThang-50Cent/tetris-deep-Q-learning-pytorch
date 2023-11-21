@@ -13,7 +13,7 @@ def get_args():
     parser.add_argument("--height", default=20, type=int)
     parser.add_argument("--block_size", default=30, type=int)
     parser.add_argument("--fps", default=300, type=int)
-    parser.add_argument("--saved_path", default="trained_model", type=str)
+    parser.add_argument("--save_path", default="trained_model", type=str)
     parser.add_argument("--output", default="output.mp4", type=str)
 
     args = parser.parse_args()
@@ -40,8 +40,8 @@ def test(opt):
     if torch.cuda.is_available():
         model.cuda()
 
-    out = cv.VideoWriter(opt.output, cv.VideoWriter_fourcc(*"MJPG"), opt.fps,
-                         (int(1.5 * opt.width * opt.block_size), opt.height * opt.block_size))
+    # out = cv.VideoWriter(opt.output, cv.VideoWriter_fourcc(*"MJPG"), opt.fps,
+    #                      (int(1.5 * opt.width * opt.block_size), opt.height * opt.block_size))
 
     while True:
         next_steps = env.get_next_state()
@@ -55,10 +55,10 @@ def test(opt):
         index = torch.argmax(predictions).item()
         action = next_actions[index]
 
-        _, done = env.steps(action, render=True, video=out)
+        _, done = env.step(action, speed=100, render=True, video=None)
 
         if done:
-            out.release()
+            # out.release()
             break
 
 

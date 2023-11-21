@@ -202,7 +202,7 @@ class Tetirs:
         
         return board
 
-    def step(self, action, render=True, video=None):
+    def step(self, action, speed=1, render=True, video=None):
         x, num_rotation = action
         self.current_pos = {'x' : x, 'y' : 0}
 
@@ -212,7 +212,7 @@ class Tetirs:
         while not self.check_collision(self.piece, self.current_pos):
             self.current_pos['y'] += 1
             if render:
-                self.render(video)
+                self.render(speed, video)
         
         overflow = self.truncate(self.piece, self.current_pos)
 
@@ -222,7 +222,7 @@ class Tetirs:
         self.board = self.store(self.piece, self.current_pos)
         lines_cleared, self.board = self.check_cleared_rows(self.board)
         score = 1 + (lines_cleared**2) * self.width
-        self.score = score
+        self.score += score
         self.tetrominoes += 1
         self.clear_line += lines_cleared
 
@@ -233,7 +233,7 @@ class Tetirs:
         
         return score, self.gameover
     
-    def render(self, video=None):
+    def render(self, speed=1, video=None):
         if not self.gameover:
             img = [self.piece_colors[p] for row in self.get_current_board_state() for p in row]
         else:
@@ -269,4 +269,4 @@ class Tetirs:
             video.write(img)
         
         cv2.imshow("DL Tetris", img)
-        cv2.waitKey(1)
+        cv2.waitKey(speed)

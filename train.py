@@ -157,9 +157,7 @@ def train(opt):
         
         if epoch > 0 and final_cleared_lines > max_cleared:
             max_cleared = final_cleared_lines
-            torch.save(model, f'{opt.save_path}/tetris_{epoch}')
-
-    torch.save(model, f'{opt.save_path}/tetris')
+            torch.save(model, f'{opt.save_path}/tetris')
 
 if __name__ == '__main__':
     opt = get_args()
